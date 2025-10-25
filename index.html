@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pest AI Downloader</title>
+</head>
+<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
+  <h2>🎥 Pest AI Video Downloader</h2>
+  <input id="url" type="text" placeholder="Paste video link here..." style="width: 300px; padding: 10px;">
+  <button onclick="download()" style="padding: 10px 15px; margin-left: 5px;">Download</button>
+  <p id="status"></p>
+
+  <script>
+    function download() {
+      let link = document.getElementById('url').value;
+      if (!link) {
+        document.getElementById('status').innerText = 'Please enter a link!';
+        return;
+      }
+      window.open(link, '_blank');
+      document.getElementById('status').innerText = 'Opening video...';
+    }
+  </script>
+</body>
+</html>
