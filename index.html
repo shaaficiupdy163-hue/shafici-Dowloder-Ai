@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaafici Shop - Premium Shopping</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'gold': '#D4AF37',
+                        'emerald': '#0BDA51',
+                        'sapphire': '#0F52BA',
+                        'ruby': '#E0115F',
+                        'amethyst': '#9966CC',
+                        'topaz': '#FFC87C',
+                        'pearl': '#FDEEF4',
+                        'diamond': '#C0C0C0'
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            height: 220px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #D4AF37 0%, #F7EF8A 100%);
+            color: #000;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);
+        }
+        
+        .favorite-btn {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+        }
+        
+        .nav-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #D4AF37;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after, .nav-item.active::after {
+            width: 100%;
+        }
+        
+        .category-filter {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .category-filter.active {
+            border-color: #D4AF37;
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.1"><polygon fill="%23D4AF37" points="100,100 150,200 100,300 50,200"/><polygon fill="%230BDA51" points="400,50 450,150 400,250 350,150"/><polygon fill="%23E0115F" points="700,150 750,250 700,350 650,250"/><polygon fill="%230F52BA" points="250,400 300,500 250,600 200,500"/><polygon fill="%239966CC" points="550,350 600,450 550,550 500,450"/><polygon fill="%23FFC87C" points="800,450 850,550 800,650 750,550"/></svg>');
+        }
+        
+        .add-to-cart {
+            background: linear-gradient(135deg, #D4AF37 0%, #F7EF8A 100%);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .add-to-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(212, 175, 55, 0.4);
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #D4AF37, #F7EF8A);
+            border-radius: 3px;
+        }
+        
+        .cart-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .special-offer {
+            background: linear-gradient(135deg, #E0115F 0%, #FF8BA0 100%);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 10px rgba(224, 17, 95, 0.5); }
+            to { box-shadow: 0 0 20px rgba(224, 17, 95, 0.8); }
+        }
+        
+        .bottom-nav {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-item-bottom {
+            transition: all 0.2s ease;
+            border-radius: 12px;
+            padding: 8px 12px;
+        }
+        
+        .nav-item-bottom.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: #D4AF37;
+        }
+        
+        .nav-item-bottom:active {
+            transform: scale(0.95);
+        }
+        
+        .signup-modal, .login-modal, .payment-modal, .account-modal {
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 100;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .info-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .marquee {
+            animation: marquee 20s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .ai-assistant {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            z-index: 100;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .smooth-transition {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .product-detail-modal {
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-gold to-amber-200 rounded-full flex items-center justify-center mr-3 shadow-lg">
+                        <i class="fas fa-gem text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-serif font-bold text-gray-800">Shaafici Shop</h1>
+                        <p class="text-xs text-gray-500">Premium Shopping Experience</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="nav-item active text-gray-800 font-medium" onclick="setActiveNav(this)">Home</a>
+                    <a href="#cars" class="nav-item text-gray-600 font-medium" onclick="setActiveNav(this)">Cars</a>
+                    <a href="#electronics" class="nav-item text-gray-600 font-medium" onclick="setActiveNav(this)">Electronics</a>
+                    <a href="#jewelry" class="nav-item text-gray-600 font-medium" onclick="setActiveNav(this)">Jewelry</a>
+                    <a href="#clothing" class="nav-item text-gray-600 font-medium" onclick="setActiveNav(this)">Clothing</a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <i class="fas fa-search text-gray-600 text-xl cursor-pointer hover:text-gold transition-colors"></i>
+                    </div>
+                    <div class="relative">
+                        <i class="far fa-heart text-gray-600 text-xl cursor-pointer hover:text-gold transition-colors"></i>
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-shopping-bag text-gray-600 text-xl cursor-pointer hover:text-gold transition-colors"></i>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                    </div>
+                    <button onclick="openLoginModal()" class="w-10 h-10 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center cursor-pointer shadow-inner">
+                        <i class="fas fa-user text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Special Offers Marquee -->
+    <div class="bg-gold text-white py-2 overflow-hidden">
+        <div class="marquee whitespace-nowrap">
+            <span class="font-semibold mx-4">🚗 Luxury Cars Available! • 📱 Latest Electronics • 💎 Premium Jewelry • 👕 Fashion Clothing • 🛵 Motorcycles • 📞 Contact: +252 61 354 2977</span>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-16 md:py-24">
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl md:text-6xl font-serif font-bold mb-6">Welcome to <span class="text-gold">Shaafici Shop</span></h1>
+                <p class="text-xl mb-8 opacity-90">Your one-stop destination for luxury cars, electronics, jewelry, and fashion. Quality products with guaranteed satisfaction.</p>
+                <div class="flex space-x-4">
+                    <button class="bg-gold text-gray-900 font-semibold py-3 px-8 rounded-full hover:bg-amber-500 transition-colors shadow-lg">Shop Now</button>
+                    <button class="border-2 border-white text-white font-semibold py-3 px-8 rounded-full hover:bg-white hover:text-gray-900 transition-colors" onclick="openLoginModal()">Create Account</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12 pb-32">
+        <!-- Categories -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-serif font-bold text-gray-800 mb-2 section-title">Shop By Category</h2>
+            <p class="text-gray-600 mb-8 max-w-2xl">Explore our wide range of products from different categories.</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="category-filter active rounded-2xl p-6 bg-white shadow-md text-center cursor-pointer transition-all hover:shadow-lg" onclick="filterProducts('all')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-300 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+                        <i class="fas fa-car text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800">Cars & Vehicles</h3>
+                    <p class="text-sm text-gray-600 mt-2">Luxury Cars, Buses, Trucks</p>
+                </div>
+                
+                <div class="category-filter rounded-2xl p-6 bg-white shadow-md text-center cursor-pointer transition-all hover:shadow-lg" onclick="filterProducts('electronics')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-sapphire to-blue-400 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+                        <i class="fas fa-mobile-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800">Electronics</h3>
+                    <p class="text-sm text-gray-600 mt-2">Phones, Laptops, Appliances</p>
+                </div>
+                
+                <div class="category-filter rounded-2xl p-6 bg-white shadow-md text-center cursor-pointer transition-all hover:shadow-lg" onclick="filterProducts('jewelry')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-amethyst to-purple-400 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+                        <i class="fas fa-gem text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800">Jewelry</h3>
+                    <p class="text-sm text-gray-600 mt-2">Gold, Silver, Diamonds</p>
+                </div>
+                
+                <div class="category-filter rounded-2xl p-6 bg-white shadow-md text-center cursor-pointer transition-all hover:shadow-lg" onclick="filterProducts('clothing')">
+                    <div class="w-16 h-16 bg-gradient-to-br from-topaz to-amber-300 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md">
+                        <i class="fas fa-tshirt text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800">Clothing</h3>
+                    <p class="text-sm text-gray-600 mt-2">Fashion, Shoes, Accessories</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cars Section -->
+        <section class="mb-16" id="cars">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-serif font-bold text-gray-800 section-title">Luxury Cars & Vehicles</h2>
+                <button class="text-gold font-semibold flex items-center" onclick="showAllProducts('cars')">
+                    View All <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Luxury Bus -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="cars">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YnVzfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="Luxury Bus" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$85,000</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Mercedes Luxury Bus</h3>
+                            <span class="text-xs font-medium bg-blue-100 text-sapphire px-2 py-1 rounded-full">New</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">45-seater luxury bus with premium amenities, AC, and entertainment system.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-gray-500 text-sm ml-2">(23)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Mercedes Luxury Bus', 85000, '45-seater luxury bus with premium amenities, AC, entertainment system, comfortable seating, and modern safety features. Perfect for long-distance travel.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Toyota Land Cruiser -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="cars">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dG95b3RhJTIwbGFuZCUyMGNydWlzZXJ8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Toyota Land Cruiser" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="fas fa-heart text-red-500"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$75,000</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Toyota Land Cruiser</h3>
+                            <span class="text-xs font-medium bg-green-100 text-emerald px-2 py-1 rounded-full">2023</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Premium SUV with advanced features, 4WD, and luxury interior.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(45)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Toyota Land Cruiser', 75000, 'Premium SUV with advanced 4WD system, luxury leather interior, advanced safety features, and powerful engine. Perfect for both city and off-road driving.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                   <!-- Heavy Truck -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="cars">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1580310614727-8a355738f0ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJ1Y2t8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Heavy Truck" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$120,000</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Volvo Heavy Truck</h3>
+                            <span class="text-xs font-medium bg-red-100 text-ruby px-2 py-1 rounded-full">Heavy Duty</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Heavy duty truck for commercial use with excellent load capacity.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(18)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Volvo Heavy Truck', 120000, 'Heavy duty commercial truck with excellent load capacity, fuel-efficient engine, advanced safety systems, and comfortable cabin. Ideal for long-haul transportation.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Electronics Section -->
+        <section class="mb-16" id="electronics">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-serif font-bold text-gray-800 section-title">Electronics & Appliances</h2>
+                <button class="text-gold font-semibold flex items-center" onclick="showAllProducts('electronics')">
+                    View All <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- iPhone 15 Pro -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="electronics">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGlwaG9uZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="iPhone 15 Pro" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$1,199</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">iPhone 15 Pro Max</h3>
+                            <span class="text-xs font-medium bg-blue-100 text-sapphire px-2 py-1 rounded-full">Latest</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">256GB Storage, Titanium design, Pro camera system.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-gray-500 text-sm ml-2">(128)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('iPhone 15 Pro Max', 1199, 'Latest iPhone 15 Pro Max with titanium design, 256GB storage, professional camera system, and advanced features. Unlocked for all carriers.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Samsung Refrigerator -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="electronics">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVmcmlnZXJhdG9yfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="Samsung Refrigerator" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="fas fa-heart text-red-500"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$1,500</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Samsung Refrigerator</h3>
+                            <span class="text-xs font-medium bg-green-100 text-emerald px-2 py-1 rounded-full">Smart</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Large capacity smart refrigerator with advanced cooling technology.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(67)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Samsung Refrigerator', 1500, 'Large capacity smart refrigerator with advanced cooling technology, digital temperature control, energy efficient, and smart features for modern homes.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Washing Machine -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="electronics">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8d2FzaGluZyUyMG1hY2hpbmV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Washing Machine" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$800</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">LG Washing Machine</h3>
+                            <span class="text-xs font-medium bg-purple-100 text-amethyst px-2 py-1 rounded-full">Front Load</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Front load washing machine with steam function and smart features.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(89)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('LG Washing Machine', 800, 'Front load washing machine with steam function, multiple wash programs, energy efficient, and smart features for convenient laundry.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Jewelry Section -->
+        <section class="mb-16" id="jewelry">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-serif font-bold text-gray-800 section-title">Premium Jewelry</h2>
+                <button class="text-gold font-semibold flex items-center" onclick="showAllProducts('jewelry')">
+                    View All <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Gold Necklace -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="jewelry">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1588444650700-6c7f0c89d36b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z29sZCUyMG5lY2tsYWNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="Gold Necklace" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$2,500</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">24K Gold Necklace</h3>
+                            <span class="text-xs font-medium bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full">Premium</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Pure 24K gold necklace with diamond pendant, elegant design.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-gray-500 text-sm ml-2">(34)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('24K Gold Necklace', 2500, 'Pure 24K gold necklace with diamond pendant, elegant design, perfect for special occasions. Comes with certification of authenticity.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Diamond Ring -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="jewelry">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZGlhbW9uZCUyMHJpbmd8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Diamond Ring" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="fas fa-heart text-red-500"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$3,800</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Diamond Engagement Ring</h3>
+                            <span class="text-xs font-medium bg-blue-100 text-sapphire px-2 py-1 rounded-full">2 Carat</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">2-carat diamond engagement ring with platinum setting.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(56)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Diamond Engagement Ring', 3800, '2-carat diamond engagement ring with platinum setting, excellent clarity and cut. Perfect for proposals and special moments. Certified diamond.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gold Bracelet -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="jewelry">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z29sZCUyMGJyYWNlbGV0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="Gold Bracelet" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$1,200</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Gold Chain Bracelet</h3>
+                            <span class="text-xs font-medium bg-yellow-100 text-yellow-600 px-2 py-1 rounded-full">22K</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">22K gold chain bracelet with secure clasp, elegant design.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(42)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Gold Chain Bracelet', 1200, '22K gold chain bracelet with secure clasp, elegant design suitable for both casual and formal occasions. High-quality craftsmanship.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clothing Section -->
+        <section class="mb-16" id="clothing">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-serif font-bold text-gray-800 section-title">Fashion Clothing</h2>
+                <button class="text-gold font-semibold flex items-center" onclick="showAllProducts('clothing')">
+                    View All <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Designer Shirt -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="clothing">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c2hpcnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Designer Shirt" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$85</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Designer Cotton Shirt</h3>
+                            <span class="text-xs font-medium bg-blue-100 text-sapphire px-2 py-1 rounded-full">Premium</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">High-quality cotton shirt with elegant design, various colors available.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="text-gray-500 text-sm ml-2">(78)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Designer Cotton Shirt', 85, 'High-quality cotton shirt with elegant design, comfortable fit, and various color options. Perfect for both casual and formal occasions.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fashionable Jeans -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="clothing">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8amVhbnN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Fashion Jeans" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="fas fa-heart text-red-500"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$120</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Designer Jeans</h3>
+                            <span class="text-xs font-medium bg-green-100 text-emerald px-2 py-1 rounded-full">Trendy</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Premium denim jeans with perfect fit and stylish design.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(94)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Designer Jeans', 120, 'Premium denim jeans with perfect fit, stylish design, and comfortable wear. Available in various sizes and washes for the modern look.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Leather Jacket -->
+                <div class="product-card shadow-md rounded-2xl overflow-hidden" data-category="clothing">
+                    <div class="relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bGVhdGhlciUyMGphY2tldHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Leather Jacket" class="product-image">
+                        <button class="favorite-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center shadow-md">
+                            <i class="far fa-heart text-gray-700"></i>
+                        </button>
+                        <div class="absolute bottom-4 left-4 price-tag">$350</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-gray-800">Genuine Leather Jacket</h3>
+                            <span class="text-xs font-medium bg-red-100 text-ruby px-2 py-1 rounded-full">Premium</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">High-quality genuine leather jacket with stylish design.</p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center text-amber-500">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="text-gray-500 text-sm ml-2">(63)</span>
+                            </div>
+                            <button class="add-to-cart text-gray-900 py-2 px-6 rounded-full text-sm font-semibold" onclick="showProductDetails('Genuine Leather Jacket', 350, 'High-quality genuine leather jacket with stylish design, comfortable fit, and durable construction. Perfect for all seasons and various occasions.')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Offer -->
+        <section class="mb-16">
+            <div class="special-offer rounded-2xl p-8 md:p-12 text-white overflow-hidden relative">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -translate-y-32 translate-x-32"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full translate-y-24 -translate-x-24"></div>
+                
+                <div class="relative z-10 max-w-2xl">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Summer Mega Sale</h2>
+                    <p class="text-xl mb-6 opacity-90">Enjoy up to 40% off on selected items. Limited time offer with free shipping!</p>
+                    <div class="flex items-center mb-6">
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center mr-4">
+                            <div class="text-2xl font-bold">07</div>
+                            <div class="text-sm">Days</div>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center mr-4">
+                            <div class="text-2xl font-bold">12</div>
+                            <div class="text-sm">Hours</div>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center mr-4">
+                            <div class="text-2xl font-bold">45</div>
+                            <div class="text-sm">Minutes</div>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                            <div class="text-2xl font-bold">30</div>
+                            <div class="text-sm">Seconds</div>
+                        </div>
+                    </div>
+                    <button class="bg-white text-ruby font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg">Shop Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Section -->
+        <section class="mb-16">
+            <div class="info-section rounded-2xl p-8 text-white">
+                <h2 class="text-3xl font-serif font-bold mb-6 text-center">Why Choose Shaafici Shop?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Secure Payment</h3>
+                        <p class="opacity-90">100% secure payment processing with multiple payment options</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shipping-fast text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
+                        <p class="opacity-90">Quick delivery across Somalia with real-time tracking</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-headset text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">24/7 Support</h3>
+                        <p class="opacity-90">Customer support available round the clock via WhatsApp and email</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-serif font-bold text-gray-800 mb-8 section-title">Frequently Asked Questions</h2>
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <div class="space-y-4">
+                    <div class="border-b border-gray-200 pb-4">
+                        <button class="flex justify-between items-center w-full text-left font-semibold text-gray-800" onclick="toggleFAQ(this)">
+                            How do I place an order?
+                            <i class="fas fa-chevron-down text-gold"></i>
+                        </button>
+                        <div class="faq-answer mt-2 text-gray-600 hidden">
+                            Simply browse our products, click "View Details" to see product information, then add to cart and proceed to checkout. You'll need to create an account or login first.
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-200 pb-4">
+                        <button class="flex justify-between items-center w-full text-left font-semibold text-gray-800" onclick="toggleFAQ(this)">
+                            What payment methods do you accept?
+                            <i class="fas fa-chevron-down text-gold"></i>
+                        </button>
+                        <div class="faq-answer mt-2 text-gray-600 hidden">
+                            We accept credit/debit cards, bank transfers, and mobile money payments. All payments are secure and encrypted.
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-200 pb-4">
+                        <button class="flex justify-between items-center w-full text-left font-semibold text-gray-800" onclick="toggleFAQ(this)">
+                            Do you offer delivery outside Mogadishu?
+                            <i class="fas fa-chevron-down text-gold"></i>
+                        </button>
+                        <div class="faq-answer mt-2 text-gray-600 hidden">
+                            Yes, we deliver to all major cities in Somalia. Delivery fees may vary based on location.
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-200 pb-4">
+                        <button class="flex justify-between items-center w-full text-left font-semibold text-gray-800" onclick="toggleFAQ(this)">
+                            Can I return a product if I'm not satisfied?
+                            <i class="fas fa-chevron-down text-gold"></i>
+                        </button>
+                        <div class="faq-answer mt-2 text-gray-600 hidden">
+                            We offer a 7-day return policy for most items. The product must be in original condition with all packaging.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="mb-16" id="contact">
+            <div class="bg-white rounded-2xl shadow-md p-8">
+                <h2 class="text-3xl font-serif font-bold text-gray-800 mb-2 section-title">Contact Us</h2>
+                <p class="text-gray-600 mb-6">Get in touch with us for any inquiries or custom orders. We're here to help you!</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Contact Information</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-phone text-gold mr-3"></i>
+                                <span>+252 61 354 2977</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope text-gold mr-3"></i>
+                                <span>shaaficiupdy163@gmail.com</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-gold mr-3"></i>
+                                <span>Mogadishu, Somalia</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fab fa-whatsapp text-gold mr-3"></i>
+                                <span>WhatsApp: +252 61 354 2977</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Business Hours</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span>Saturday - Thursday</span>
+                                <span>8:00 AM - 8:00 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Friday</span>
+                                <span>2:00 PM - 8:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <a href="https://wa.me/252613542977" target="_blank" class="bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
+    </div>
+
+    <!-- AI Assistant Button -->
+    <div class="ai-assistant">
+        <button onclick="openAIAssistant()" class="bg-purple-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-purple-600 transition-colors">
+            <i class="fas fa-robot text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 z-50 py-3 px-6">
+        <div class="flex justify-between items-center">
+            <a href="#" class="nav-item-bottom active flex flex-col items-center text-gold" onclick="setActiveBottomNav(this)">
+                <i class="fas fa-home text-lg mb-1"></i>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="#cars" class="nav-item-bottom flex flex-col items-center text-gray-500" onclick="setActiveBottomNav(this)">
+                <i class="fas fa-car text-lg mb-1"></i>
+                <span class="text-xs">Cars</span>
+            </a>
+            <a href="#electronics" class="nav-item-bottom flex flex-col items-center text-gray-500" onclick="setActiveBottomNav(this)">
+                <i class="fas fa-mobile-alt text-lg mb-1"></i>
+                <span class="text-xs">Electronics</span>
+            </a>
+            <a href="#jewelry" class="nav-item-bottom flex flex-col items-center text-gray-500" onclick="setActiveBottomNav(this)">
+                <i class="fas fa-gem text-lg mb-1"></i>
+                <span class="text-xs">Jewelry</span>
+            </a>
+            <button onclick="openLoginModal()" class="nav-item-bottom flex flex-col items-center text-gray-500">
+                <i class="fas fa-user text-lg mb-1"></i>
+                <span class="text-xs">Account</span>
+            </button>
+        </div>
+    </nav>
+        <!-- Product Detail Modal -->
+    <div id="productDetailModal" class="product-detail-modal fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-serif font-bold text-gray-800" id="productDetailTitle">Product Details</h3>
+                <button onclick="closeProductDetailModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <img id="productDetailImage" src="" alt="" class="w-full h-64 object-cover rounded-lg">
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold text-gray-800 mb-2" id="productDetailName"></h4>
+                    <div class="text-2xl font-bold text-gold mb-4" id="productDetailPrice"></div>
+                    <p class="text-gray-600 mb-6" id="productDetailDescription"></p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-semibold text-gray-800 mb-2">Features:</h5>
+                            <ul class="text-gray-600 list-disc list-inside space-y-1" id="productDetailFeatures">
+                                <li>High quality materials</li>
+                                <li>Premium craftsmanship</li>
+                                <li>Warranty included</li>
+                                <li>Free delivery available</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <button class="flex-1 bg-gold text-gray-900 font-semibold py-3 rounded-full hover:bg-amber-500 transition-colors shadow-lg" onclick="addToCartFromDetail()">
+                                Add to Cart
+                            </button>
+                            <button class="flex-1 border border-gold text-gold font-semibold py-3 rounded-full hover:bg-gold hover:text-white transition-colors">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant Modal -->
+    <div id="aiAssistantModal" class="product-detail-modal fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-serif font-bold text-gray-800">AI Shopping Assistant</h3>
+                <button onclick="closeAIAssistant()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="bg-gray-50 rounded-lg p-4 mb-4 h-48 overflow-y-auto">
+                <div class="text-sm text-gray-600">
+                    <p class="mb-2"><strong>AI:</strong> Hello! I'm your shopping assistant. How can I help you today?</p>
+                    <p><strong>AI:</strong> I can help you find products, compare prices, check availability, or answer any questions about our store.</p>
+                </div>
+            </div>
+            
+            <div class="flex space-x-2">
+                <input type="text" placeholder="Ask me anything..." class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold">
+                <button class="bg-gold text-gray-900 font-semibold px-4 py-2 rounded-lg hover:bg-amber-500 transition-colors">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <p class="text-sm text-gray-500">Available 24/7 to help with your shopping needs</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-serif font-bold text-gray-800">Welcome Back</h3>
+                <button onclick="closeLoginModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form class="space-y-4" id="loginForm">
+                <div>
+                    <label class="block text-gray-700 mb-2">Email Address</label>
+                    <input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold" required>
+                </div>
+                
+                <button type="submit" class="w-full bg-gold text-gray-900 font-semibold py-3 rounded-full hover:bg-amber-500 transition-colors shadow-lg">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <button onclick="switchToSignup()" class="text-gold font-semibold">Don't have an account? Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="signup-modal fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-serif font-bold text-gray-800">Create Account</h3>
+                <button onclick="closeSignupModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form class="space-y-4" id="signupForm">
+                <div>
+                    <label class="block text-gray-700 mb-2">Full Name</label>
+                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 mb-2">Email Address</label>
+                    <input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 mb-2">Phone Number</label>
+                    <input type="tel" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold" required>
+                </div>
+                
+                <button type="submit" class="w-full bg-gold text-gray-900 font-semibold py-3 rounded-full hover:bg-amber-500 transition-colors shadow-lg">
+                    Create Account
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <button onclick="switchToLogin()" class="text-gold font-semibold">Already have an account? Sign In</button>
+            </div>
+        </div>
+    </div>
+        <!-- Account Modal -->
+    <div id="accountModal" class="account-modal fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-serif font-bold text-gray-800">My Account</h3>
+                <button onclick="closeAccountModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gold rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-800" id="userName">User Name</h4>
+                    <p class="text-gray-600" id="userEmail">user@example.com</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <button class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-edit text-gold mr-3"></i>
+                        Edit Profile
+                    </button>
+                    <button class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-shopping-bag text-gold mr-3"></i>
+                        Order History
+                    </button>
+                    <button class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-heart text-gold mr-3"></i>
+                        Wishlist
+                    </button>
+                    <button class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-cog text-gold mr-3"></i>
+                        Settings
+                    </button>
+                </div>
+                
+                <button class="w-full bg-red-500 text-white font-semibold py-3 rounded-full hover:bg-red-600 transition-colors">
+                    Log Out
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User Account Management
+        let currentUser = null;
+        let cart = [];
+        let totalPrice = 0;
+
+        // Bottom Navigation Functionality
+        function setActiveBottomNav(element) {
+            const navItems = document.querySelectorAll('.nav-item-bottom');
+            navItems.forEach(item => {
+                item.classList.remove('active', 'text-gold');
+                item.classList.add('text-gray-500');
+            });
+            
+            element.classList.remove('text-gray-500');
+            element.classList.add('active', 'text-gold');
+        }
+
+        // Header Navigation Functionality
+        function setActiveNav(element) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active', 'text-gray-800');
+                item.classList.add('text-gray-600');
+            });
+            
+            element.classList.remove('text-gray-600');
+            element.classList.add('active', 'text-gray-800');
+        }
+
+        // Category Filters
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            const filters = document.querySelectorAll('.category-filter');
+            
+            filters.forEach(filter => filter.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            products.forEach(product => {
+                if (category === 'all') {
+                    product.style.display = 'block';
+                } else {
+                    if (product.dataset.category === category) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Show All Products in Category
+        function showAllProducts(category) {
+            filterProducts(category);
+            // Scroll to the category section
+            document.getElementById(category).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Product Details Modal
+        function showProductDetails(name, price, description) {
+            document.getElementById('productDetailName').textContent = name;
+            document.getElementById('productDetailPrice').textContent = '$' + price.toLocaleString();
+            document.getElementById('productDetailDescription').textContent = description;
+            
+            // Set product image (in a real app, this would be dynamic)
+            document.getElementById('productDetailImage').src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHByb2R1Y3R8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60';
+            
+            document.getElementById('productDetailModal').classList.remove('hidden');
+            document.getElementById('productDetailModal').classList.add('flex');
+        }
+
+        function closeProductDetailModal() {
+            document.getElementById('productDetailModal').classList.remove('flex');
+            document.getElementById('productDetailModal').classList.add('hidden');
+        }
+
+        function addToCartFromDetail() {
+            if (!currentUser) {
+                openLoginModal();
+                return;
+            }
+            
+            const productName = document.getElementById('productDetailName').textContent;
+            const priceText = document.getElementById('productDetailPrice').textContent;
+            const price = parseInt(priceText.replace('$', '').replace(',', ''));
+            
+            cart.push({ name: productName, price: price });
+            totalPrice += price;
+            
+            // Update cart badge
+            const cartBadge = document.querySelector('.cart-badge');
+            cartBadge.textContent = cart.length;
+            
+            // Show success message
+            alert(`${productName} added to cart! Total: $${totalPrice.toLocaleString()}`);
+            closeProductDetailModal();
+        }
+
+        // AI Assistant
+        function openAIAssistant() {
+            document.getElementById('aiAssistantModal').classList.remove('hidden');
+            document.getElementById('aiAssistantModal').classList.add('flex');
+        }
+
+        function closeAIAssistant() {
+            document.getElementById('aiAssistantModal').classList.remove('flex');
+            document.getElementById('aiAssistantModal').classList.add('hidden');
+        }
+
+        // Favorite Buttons
+        const favoriteBtns = document.querySelectorAll('.favorite-btn');
+        favoriteBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far', 'text-gray-700');
+                    icon.classList.add('fas', 'text-red-500');
+                } else {
+                    icon.classList.remove('fas', 'text-red-500');
+                    icon.classList.add('far', 'text-gray-700');
+                }
+            });
+        });
+
+        // FAQ Accordion
+        function toggleFAQ(button) {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                answer.classList.add('hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+
+        // Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginModal').classList.add('flex');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('flex');
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function openSignupModal() {
+            document.getElementById('signupModal').classList.remove('hidden');
+            document.getElementById('signupModal').classList.add('flex');
+        }
+
+        function closeSignupModal() {
+            document.getElementById('signupModal').classList.remove('flex');
+            document.getElementById('signupModal').classList.add('hidden');
+        }
+
+        function openAccountModal() {
+            if (!currentUser) {
+                openLoginModal();
+                return;
+            }
+            document.getElementById('accountModal').classList.remove('hidden');
+            document.getElementById('accountModal').classList.add('flex');
+        }
+
+        function closeAccountModal() {
+            document.getElementById('accountModal').classList.remove('flex');
+            document.getElementById('accountModal').classList.add('hidden');
+        }
+
+        function switchToSignup() {
+            closeLoginModal();
+            openSignupModal();
+        }
+
+        function switchToLogin() {
+            closeSignupModal();
+            openLoginModal();
+        }
+
+        // Form Submissions
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simulate login
+            currentUser = {
+                name: 'User',
+                email: document.querySelector('#loginForm input[type="email"]').value
+            };
+            alert('Login successful! Welcome back.');
+            closeLoginModal();
+            openAccountModal();
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simulate signup
+            currentUser = {
+                name: document.querySelector('#signupForm input[type="text"]').value,
+                email: document.querySelector('#signupForm input[type="email"]').value
+            };
+            alert('Account created successfully! Welcome to Shaafici Shop.');
+            closeSignupModal();
+            openAccountModal();
+        });
+
+        // Close modals when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) closeLoginModal();
+        });
+
+        document.getElementById('signupModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSignupModal();
+        });
+
+        document.getElementById('accountModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAccountModal();
+        });
+
+        document.getElementById('productDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeProductDetailModal();
+        });
+
+        document.getElementById('aiAssistantModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAIAssistant();
+        });
+
+        // Initialize FAQ answers as hidden
+        document.querySelectorAll('.faq-answer').forEach(answer => {
+            answer.classList.add('hidden');
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
